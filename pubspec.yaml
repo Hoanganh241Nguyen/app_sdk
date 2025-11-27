@@ -1,0 +1,28 @@
+name: app_sdk
+description: A reusable SDK package for ads (AdMob), analytics (Adjust), and other integrations
+version: 1.0.0
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # AdMob
+  google_mobile_ads: ^5.0.0
+  
+  # Analytics
+  adjust_sdk: ^5.4.5
+  
+  # Utilities
+  get: ^4.6.6
+  get_storage: ^2.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
