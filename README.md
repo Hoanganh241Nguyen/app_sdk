@@ -35,7 +35,7 @@ Add to your `pubspec.yaml`:
 dependencies:
   app_sdk:
     git:
-      url: https://github.com/YOUR_USERNAME/app_sdk.git
+      url: https://github.com/Hoanganh241Nguyen/app_sdk.git
       ref: main  # or specific tag/commit
 ```
 
@@ -56,9 +56,9 @@ dependencies:
 
 ## Usage
 
-### 1. Initialize SDK (Recommended)
+### 1. Initialize SDK (Recommended - One Line)
 
-Initialize all SDK components at app startup:
+Initialize all SDK components at app startup with a single call:
 
 ```dart
 import 'package:app_sdk/app_sdk.dart';
@@ -66,12 +66,17 @@ import 'package:app_sdk/app_sdk.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Initialize all SDK components
+  // Initialize all SDK components (Locale, AdMob, etc.)
   await AppSdk.initialize();
   
   runApp(const MyApp());
 }
 ```
+
+That's it! `AppSdk.initialize()` will automatically:
+- ✅ Load saved locale ID
+- ✅ Initialize AdMob SDK
+- ✅ Ready to use all SDK features
 
 ### 2. Initialize Individual Components
 
