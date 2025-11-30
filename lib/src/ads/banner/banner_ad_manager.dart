@@ -58,6 +58,21 @@ class BannerAdManager {
             _isLoading = false;
             _isLoaded = false;
             debugPrint('❌ Banner ad failed to load: ${error.message}');
+            debugPrint('   Error code: ${error.code}');
+            debugPrint('   Error domain: ${error.domain}');
+            debugPrint('   Response info: ${error.responseInfo}');
+            
+            // Error code 3 = ERROR_CODE_NO_FILL (Publisher data not found)
+            // This usually means:
+            // 1. Ad unit ID not approved yet
+            // 2. Ad unit ID is new and has no ads to serve
+            // 3. Account not fully approved
+            if (error.code == 3) {
+              debugPrint('⚠️ Ad unit ID may not be approved yet or has no ads to serve');
+              debugPrint('   Check AdMob console: https://apps.admob.com/');
+              debugPrint('   Ad Unit ID: $_adUnitId');
+            }
+            
             ad.dispose();
             _bannerAd = null;
             onAdFailedToLoad?.call();

@@ -14,6 +14,8 @@ export 'src/ads/banner/banner_ad_manager.dart';
 export 'src/ads/interstitial/interstitial_ad_manager.dart';
 export 'src/ads/rewarded/rewarded_ad_manager.dart';
 export 'src/ads/app_open/app_open_ad_manager.dart';
+export 'src/ads/native/native_ad_manager.dart';
+export 'src/ads/native/native_ad_widget.dart';
 
 // Analytics
 export 'src/analytics/analytics_manager.dart';
@@ -21,6 +23,9 @@ export 'src/analytics/analytics_manager.dart';
 // Config
 export 'src/config/sdk_config.dart';
 export 'src/config/locale_manager.dart';
+
+// Platform
+export 'src/platform/platform_helper.dart';
 
 // SDK Initializer
 export 'src/app_sdk_init.dart';

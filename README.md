@@ -9,6 +9,7 @@ Reusable SDK package for ads (AdMob), analytics (Adjust), and other integrations
   - Interstitial Ads
   - Rewarded Ads
   - App Open Ads
+  - Native Ads (with Full Screen on Tap)
   
 - ✅ **Adjust Analytics Integration**
   - Event tracking
@@ -19,6 +20,13 @@ Reusable SDK package for ads (AdMob), analytics (Adjust), and other integrations
   - Automatic locale loading on app start
   - Persistent locale storage
   - Easy locale management
+
+- ✅ **Platform Helper (Native Android)**
+  - Get Device ID
+  - Get device model and manufacturer
+  - Get OS version
+  - Get package name
+  - Native Kotlin implementation
 
 - ✅ **Clean Architecture**
   - Modular design
@@ -113,6 +121,32 @@ if (LocaleManager.instance.isInitialized) {
 }
 ```
 
+### 4. Platform Helper (Native Features)
+
+Access native platform functionality:
+
+```dart
+// Get Android Device ID
+final deviceId = await PlatformHelper.getDeviceId();
+print('Device ID: $deviceId');
+
+// Get device model
+final model = await PlatformHelper.getDeviceModel();
+print('Device: $model');
+
+// Get OS version
+final osVersion = await PlatformHelper.getOSVersion();
+print('OS: $osVersion');
+
+// Get package name
+final packageName = await PlatformHelper.getPackageName();
+print('Package: $packageName');
+
+// Get all device info
+final deviceInfo = await PlatformHelper.getDeviceInfo();
+print('Device Info: $deviceInfo');
+```
+
 ### 2. Banner Ads
 
 ```dart
@@ -203,6 +237,49 @@ await appOpenManager.loadAd(
 // Show ad when app opens
 if (appOpenManager.isLoaded) {
   appOpenManager.showAd();
+}
+```
+
+### 6. Native Ads (Full Screen on Tap)
+
+```dart
+import 'package:app_sdk/app_sdk.dart';
+
+final nativeManager = AdsService.instance.nativeManager;
+final interstitialManager = AdsService.instance.interstitialManager;
+
+// Load native ad
+await nativeManager.loadAd(
+  onAdLoaded: () {
+    print('Native ad loaded');
+  },
+);
+
+// Preload interstitial for full screen
+await interstitialManager.loadAd(
+  onAdLoaded: () {
+    print('Interstitial ready for full screen');
+  },
+);
+
+// Display native ad widget with full screen on tap
+if (nativeManager.isLoaded && nativeManager.nativeAd != null) {
+  return NativeAdWidget(
+    ad: nativeManager.nativeAd!,
+    height: 300,
+    interstitialManager: interstitialManager, // Optional: show interstitial when tapped
+    onAdTapped: () {
+      print('Native ad tapped');
+    },
+    onFullScreenShown: () {
+      print('Full screen ad shown');
+    },
+    onFullScreenDismissed: () {
+      print('Full screen ad dismissed');
+      // Preload next interstitial
+      interstitialManager.preload();
+    },
+  );
 }
 ```
 

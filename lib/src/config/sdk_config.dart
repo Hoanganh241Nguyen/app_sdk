@@ -9,8 +9,12 @@ class SdkConfig {
 
   // Ad Unit IDs - Replace with your actual ad unit IDs
   // Banner Ads
-  static const String androidBannerAdUnitId = 'ca-app-pub-7111629496407310/5401361879'; // Production ID
+  static const String androidBannerAdUnitId = 'ca-app-pub-7111629496407310/5401361879'; // Production ID (Splash)
   static const String iosBannerAdUnitId = 'ca-app-pub-3940256099942544/2934735716'; // Test ID
+  
+  // Banner Home Ads
+  static const String androidBannerHomeAdUnitId = 'ca-app-pub-7111629496407310/2385150449'; // Production ID (Home)
+  static const String iosBannerHomeAdUnitId = 'ca-app-pub-3940256099942544/2934735716'; // Test ID
 
   // Interstitial Ads
   static const String androidInterstitialAdUnitId = 'ca-app-pub-3940256099942544/1033173712'; // Test ID
@@ -21,8 +25,12 @@ class SdkConfig {
   static const String iosRewardedAdUnitId = 'ca-app-pub-3940256099942544/1712485313'; // Test ID
 
   // App Open Ads
-  static const String androidAppOpenAdUnitId = 'ca-app-pub-3940256099942544/3419835294'; // Test ID
+  static const String androidAppOpenAdUnitId = 'ca-app-pub-7111629496407310/5572397044'; // Production ID
   static const String iosAppOpenAdUnitId = 'ca-app-pub-3940256099942544/5662855259'; // Test ID
+
+  // Native Ads
+  static const String androidNativeAdUnitId = 'ca-app-pub-3940256099942544/2247696110'; // Test ID
+  static const String iosNativeAdUnitId = 'ca-app-pub-3940256099942544/2934735716'; // Test ID
 
   /// Get AdMob App ID based on platform
   static String getAdMobAppId({required bool isAndroid}) {
@@ -32,6 +40,11 @@ class SdkConfig {
   /// Get Banner Ad Unit ID based on platform
   static String getBannerAdUnitId({required bool isAndroid}) {
     return isAndroid ? androidBannerAdUnitId : iosBannerAdUnitId;
+  }
+
+  /// Get Banner Home Ad Unit ID based on platform
+  static String getBannerHomeAdUnitId({required bool isAndroid}) {
+    return isAndroid ? androidBannerHomeAdUnitId : iosBannerHomeAdUnitId;
   }
 
   /// Get Interstitial Ad Unit ID based on platform
@@ -47,6 +60,11 @@ class SdkConfig {
   /// Get App Open Ad Unit ID based on platform
   static String getAppOpenAdUnitId({required bool isAndroid}) {
     return isAndroid ? androidAppOpenAdUnitId : iosAppOpenAdUnitId;
+  }
+
+  /// Get Native Ad Unit ID based on platform
+  static String getNativeAdUnitId({required bool isAndroid}) {
+    return isAndroid ? androidNativeAdUnitId : iosNativeAdUnitId;
   }
 }
 

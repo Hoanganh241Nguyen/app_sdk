@@ -4,6 +4,7 @@ import 'package:app_sdk/src/ads/banner/banner_ad_manager.dart';
 import 'package:app_sdk/src/ads/interstitial/interstitial_ad_manager.dart';
 import 'package:app_sdk/src/ads/rewarded/rewarded_ad_manager.dart';
 import 'package:app_sdk/src/ads/app_open/app_open_ad_manager.dart';
+import 'package:app_sdk/src/ads/native/native_ad_manager.dart';
 
 /// Ads Service
 /// Centralized service to manage all ad types
@@ -18,6 +19,7 @@ class AdsService {
   final InterstitialAdManager _interstitialManager = InterstitialAdManager();
   final RewardedAdManager _rewardedManager = RewardedAdManager();
   final AppOpenAdManager _appOpenManager = AppOpenAdManager();
+  final NativeAdManager _nativeManager = NativeAdManager();
 
   // Remote Config integration callbacks
   bool Function()? _shouldShowBannerHome;
@@ -46,6 +48,9 @@ class AdsService {
 
   /// Get App Open Ad Manager
   AppOpenAdManager get appOpenManager => _appOpenManager;
+
+  /// Get Native Ad Manager
+  NativeAdManager get nativeManager => _nativeManager;
 
   /// Load banner ad for home screen
   /// Checks Remote Config before loading
@@ -109,6 +114,7 @@ class AdsService {
     _interstitialManager.dispose();
     _rewardedManager.dispose();
     _appOpenManager.dispose();
+    _nativeManager.dispose();
   }
 }
 

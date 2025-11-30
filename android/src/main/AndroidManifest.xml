@@ -1,0 +1,5 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- App SDK Plugin -->
+    <!-- This plugin provides native platform functionality -->
+</manifest>
+
