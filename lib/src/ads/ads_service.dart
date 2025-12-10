@@ -52,9 +52,11 @@ class AdsService {
   /// Get Native Ad Manager
   NativeAdManager get nativeManager => _nativeManager;
 
-  /// Load banner ad for home screen
+  /// Load banner ad for home screen with adaptive size
   /// Checks Remote Config before loading
+  /// If width is provided, uses adaptive banner size
   Future<void> loadBannerHome({
+    int? width, // Screen width in pixels for adaptive banner
     VoidCallback? onAdLoaded,
     VoidCallback? onAdFailedToLoad,
   }) async {
@@ -62,14 +64,17 @@ class AdsService {
       return;
     }
     await _bannerManager.loadAd(
+      width: width,
       onAdLoaded: onAdLoaded,
       onAdFailedToLoad: onAdFailedToLoad,
     );
   }
 
-  /// Load banner ad for splash screen
+  /// Load banner ad for splash screen with adaptive size
   /// Checks Remote Config before loading
+  /// If width is provided, uses adaptive banner size
   Future<void> loadBannerSplash({
+    int? width, // Screen width in pixels for adaptive banner
     VoidCallback? onAdLoaded,
     VoidCallback? onAdFailedToLoad,
   }) async {
@@ -77,6 +82,7 @@ class AdsService {
       return;
     }
     await _bannerManager.loadAd(
+      width: width,
       onAdLoaded: onAdLoaded,
       onAdFailedToLoad: onAdFailedToLoad,
     );

@@ -1,12 +1,11 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../../config/sdk_config.dart';
 import '../ads_manager.dart';
 
 /// Banner Ad Manager
-/// Manages banner ad loading and display
+/// Manages banner ad loading and display with adaptive banner support
 class BannerAdManager {
   BannerAd? _bannerAd;
   bool _isLoading = false;
@@ -16,11 +15,13 @@ class BannerAdManager {
   AdSize? _adSize;
   AdRequest? _adRequest;
 
-  /// Load banner ad
+  /// Load banner ad with adaptive size
+  /// If width is provided, uses adaptive banner size. Otherwise falls back to standard banner.
   Future<void> loadAd({
     String? adUnitId,
     AdSize? adSize,
     AdRequest? adRequest,
+    int? width, // Screen width in pixels for adaptive banner
     VoidCallback? onAdLoaded,
     VoidCallback? onAdFailedToLoad,
   }) async {
@@ -40,7 +41,31 @@ class BannerAdManager {
       _adUnitId = adUnitId ?? SdkConfig.getBannerAdUnitId(
         isAndroid: Platform.isAndroid,
       );
-      _adSize = adSize ?? AdSize.banner;
+      
+      // Use adaptive banner if width is provided, otherwise use provided adSize or default banner
+      if (adSize != null) {
+        _adSize = adSize;
+      } else if (width != null) {
+        // Use adaptive banner size based on current orientation
+        try {
+          final adaptiveSize = await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(width);
+          if (adaptiveSize == null) {
+            debugPrint('⚠️ Failed to get adaptive banner size, falling back to standard banner');
+            _adSize = AdSize.banner;
+          } else {
+            _adSize = adaptiveSize;
+            debugPrint('✅ Using adaptive banner size: ${adaptiveSize.width}x${adaptiveSize.height}');
+          }
+        } catch (e) {
+          debugPrint('⚠️ Error getting adaptive banner size: $e, falling back to standard banner');
+          _adSize = AdSize.banner;
+        }
+      } else {
+        // Fallback to standard banner if no width provided
+        _adSize = AdSize.banner;
+        debugPrint('⚠️ No width provided, using standard banner size');
+      }
+      
       _adRequest = adRequest ?? const AdRequest();
 
       _bannerAd = BannerAd(
@@ -62,11 +87,6 @@ class BannerAdManager {
             debugPrint('   Error domain: ${error.domain}');
             debugPrint('   Response info: ${error.responseInfo}');
             
-            // Error code 3 = ERROR_CODE_NO_FILL (Publisher data not found)
-            // This usually means:
-            // 1. Ad unit ID not approved yet
-            // 2. Ad unit ID is new and has no ads to serve
-            // 3. Account not fully approved
             if (error.code == 3) {
               debugPrint('⚠️ Ad unit ID may not be approved yet or has no ads to serve');
               debugPrint('   Check AdMob console: https://apps.admob.com/');
@@ -110,6 +130,12 @@ class BannerAdManager {
   /// Check if ad is loading
   bool get isLoading => _isLoading;
 
+  /// Get current ad size (useful for getting adaptive banner height)
+  AdSize? get adSize => _adSize;
+
+  /// Get banner height (for adaptive banners, returns actual height; otherwise returns standard banner height)
+  double get bannerHeight => _adSize?.height.toDouble() ?? 50.0;
+
   /// Dispose banner ad
   void dispose() {
     _bannerAd?.dispose();
@@ -121,6 +147,7 @@ class BannerAdManager {
 
   /// Reload banner ad
   Future<void> reload({
+    int? width,
     VoidCallback? onAdLoaded,
     VoidCallback? onAdFailedToLoad,
   }) async {
@@ -129,6 +156,7 @@ class BannerAdManager {
       adUnitId: _adUnitId,
       adSize: _adSize,
       adRequest: _adRequest,
+      width: width,
       onAdLoaded: onAdLoaded,
       onAdFailedToLoad: onAdFailedToLoad,
     );
